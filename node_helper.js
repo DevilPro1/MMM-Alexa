@@ -1,3 +1,6 @@
+/** MMM-Alexa **/
+/** @bugsounet 17/01/2021 **/
+
 var NodeHelper = require("node_helper")
 const Alexa = require('@bugsounet/alexa')
 const fs = require("fs")
@@ -11,13 +14,14 @@ module.exports = NodeHelper.create({
     this.config = null
     this.alexa= {}
     this.tokens= null
+    this.alexa.init = false
   },
   socketNotificationReceived: function(notification, payload) {
     if(notification === 'SET_CONFIG'){
       this.config = payload
       this.initAlexa()
     }
-    if (notification == "START_RECORDING") {
+    if (notification == "START_RECORDING" && this.alexa.init) {
       this.alexa.avs.requestMic(__dirname+ "/tmp/request.wav")
     }
   },
@@ -26,10 +30,12 @@ module.exports = NodeHelper.create({
     console.log("[ALEXA] MMM-Alexa Version:", require('./package.json').version)
     if (this.config.debug) log = (...args) => { console.log("[ALEXA]", ...args) }
     this.alexa.config= this.config.avs
+    this.alexa.micConfig= this.config.micConfig
     console.log("[ALEXA] Config:", this.alexa.config)
     await this.initialize()
     await this.login()
     console.log("[ALEXA] Initilized!")
+    this.alexa.init = true
   },
 
   initialize: function(){
@@ -43,7 +49,7 @@ module.exports = NodeHelper.create({
       refreshToken: this.getTokens("RefreshToken"),
       debug: this.config.debug,
       verbose: this.config.verbose
-    })
+    }, this.alexa.micConfig)
 
     /** AVS event **/
     this.alexa.avs

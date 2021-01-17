@@ -1,4 +1,7 @@
-Module.register("MMM-Alexa",{
+/** MMM-Alexa **/
+/** @bugsounet 17/01/2021 **/
+
+Module.register("MMM-Alexa", {
   defaults: {
     debug: false,
     verbose: false,
@@ -7,6 +10,13 @@ Module.register("MMM-Alexa",{
       ClientId: "amzn1.application-oa2-client.XXX",
       ClientSecret: "XXX",
       InitialCode: "XXX"
+    },
+    micConfig: {
+      sampleRate: "16000",
+      channels: "1",
+      exitOnSilence: 15,
+      speechSampleDetect: 2000,
+      device: "plughw:0"
     }
   },
 
@@ -15,6 +25,7 @@ Module.register("MMM-Alexa",{
     this.audioChime.autoplay = true
     this.audioResponse = new Audio()
     this.audioResponse.autoplay = true
+    this.init = false
   },
 
   getDom: function() {
@@ -30,24 +41,28 @@ Module.register("MMM-Alexa",{
 
   getStyles: function(){
     return [
-      this.file('alexa.css')
+      this.file('MMM-Alexa.css')
     ]
   },
 
   socketNotificationReceived: function(notification, payload) {
-    if(notification.startsWith('ALEXA_')){
-      console.log(notification)
-      var alexaColor = document.getElementById("alexa")
-      if (notification == "ALEXA_TOKEN") alexaColor.className = "alexa-tokenSet"
-      if (notification == "ALEXA_START") alexaColor.className = "alexa-recordStart"
-      if (notification == "ALEXA_STOP") {
+    var alexaColor = document.getElementById("alexa")
+    switch (notification) {
+      case "ALEXA_TOKEN":
+        alexaColor.className = "alexa-tokenSet"
+        this.init = true
+        break
+      case "ALEXA_START":
+        alexaColor.className = "alexa-recordStart"
+        break
+      case "ALEXA_STOP":
         alexaColor.className = "alexa-recordStop"
         this.audioChime.src = this.file("resources/end.wav")
-      }
-      if (notification == "ALEXA_ERROR") {
+        break
+      case "ALEXA_ERROR":
         this.audioChime.src = this.file("resources/alert.mp3")
-      }
-      if (notification == "ALEXA_SPEAK") {
+        break
+      case "ALEXA_SPEAK":
         if (payload) {
           alexaColor.className = "alexa-speak"
           this.audioResponse.src = this.file(payload)+ "?seed=" + Date.now()
@@ -60,11 +75,11 @@ Module.register("MMM-Alexa",{
           alexaColor.className = "alexa-recordStop"
           this.sendNotification("SNOWBOY_START")
         }
-      }
-      if (notification == "ALEXA_BUSY") {
+        break
+      case "ALEXA_BUSY":
         alexaColor.className = "alexa-busy"
-      }
-      if (notification == "ALEXA_ALERT") {
+        break
+      case "ALEXA_ALERT":
         this.audioChime.src = this.file("resources/alert.mp3")
         console.log("[ALEXA] Alert:", payload, payload.indexOf("code"))
         this.sendNotification("SHOW_ALERT", {
@@ -73,18 +88,21 @@ Module.register("MMM-Alexa",{
           title: "MMM-Alexa",
           timer: 0
         })
-      }
+        break
     }
   },
 
-  notificationReceived: function(notification, payload, sender) {
-    if(notification === 'DOM_OBJECTS_CREATED'){
+  notificationReceived: function(notification, payload) {
+    switch (notification) {
+      case "DOM_OBJECTS_CREATED":
         this.sendSocketNotification('SET_CONFIG', this.config)
-    }
-
-    if(notification === "ALEXA_START_RECORDING"){
-      this.audioChime.src = this.file("resources/start.wav")
-      this.sendSocketNotification('START_RECORDING')
+        break
+      case "ALEXA_ACTIVATE":
+        if (this.init) {
+          this.audioChime.src = this.file("resources/start.wav")
+          this.sendSocketNotification('START_RECORDING')
+        }
+        break
     }
   }
 });
