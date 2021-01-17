@@ -1,0 +1,29 @@
+.alexa-hidden{
+    display: none;
+}
+.alexa-notInitialized,
+.alexa-busy {
+    background-color: yellow;
+    width: 32px;
+    height: 32px;
+}
+.alexa-tokenSet{
+    background-color: red;
+    width: 32px;
+    height: 32px;
+}
+.alexa-recordStart{
+    background-color: green;
+    width: 32px;
+    height: 32px;
+}
+.alexa-recordStop{
+    background-color: red;
+    width: 32px;
+    height: 32px;
+}
+.alexa-speak {
+    background-color: magenta;
+    width: 32px;
+    height: 32px;
+}

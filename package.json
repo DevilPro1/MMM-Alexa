@@ -1,0 +1,29 @@
+{
+  "name": "MMM-Alexa",
+  "version": "0.0.1-dev",
+  "description": "An embedded Amazon Alexa on MagicMirror.",
+  "main": "MMM-Alexa.js",
+  "keywords": [
+    "magic mirror",
+    "module",
+    "alexa",
+    "voice",
+    "embedded",
+    "assistant for device"
+  ],
+  "author": "bugsounet",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bugsounet/MMM-Alexa/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bugsounet/MMM-Alexa"
+  },
+  "homepage": "https://github.com/bugsounet/MMM-Alexa",
+  "dependencies": {
+    "@bugsounet/node-lpcm16": "^2.0.0",
+    "@bugsounet/alexa": "^0.0.1",
+    "xhr2": "^0.2.0"
+  }
+}
