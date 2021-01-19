@@ -70,6 +70,7 @@ module.exports = NodeHelper.create({
       this.tokens = require(file)
       return this.tokens[token] ? this.tokens[token] : null
     } else {
+      //@todo create file
       console.error("[ALEXA:ERROR] Token not found!", file)
       return null
     }

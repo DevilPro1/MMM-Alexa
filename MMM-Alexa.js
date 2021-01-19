@@ -26,16 +26,44 @@ Module.register("MMM-Alexa", {
     this.audioResponse = new Audio()
     this.audioResponse.autoplay = true
     this.init = false
+    this.status = {
+      "Alexa": {
+        Initialized: false,
+      },
+      "Google": {
+        Detected: false,
+        Initialized: false,
+      }
+    }
   },
 
   getDom: function() {
+    this.GADetect()
     var wrapper = document.createElement('div')
-    if(this.config['hideStatusIndicator']){
-      wrapper.className = 'alexa-hidden'
-    }else{
-      wrapper.className = 'alexa-notInitialized'
-    }
-    wrapper.id = 'alexa'
+    wrapper.id = "ALEXA-WRAPPER"
+    if (this.config['hideStatusIndicator']) wrapper.className = 'hidden'
+
+    var status = document.createElement('div')
+    status.id= "ALEXA_STATUS"
+    status.className = "notInitialized"
+    wrapper.appendChild(status)
+
+    var icons = document.createElement('div')
+    icons.id= "ALEXA_ICONS"
+
+    var iconGoogle = document.createElement('div')
+    iconGoogle.id= "ALEXA_ICONS_GOOGLE"
+    if (!this.status.Google.Detected) iconGoogle.className= "hidden"
+    else iconGoogle.className= "busy"
+    icons.appendChild(iconGoogle)
+
+    var iconAlexa = document.createElement('div')
+    iconAlexa.id= "ALEXA_ICONS_ALEXA"
+    iconAlexa.className= "busy"
+    icons.appendChild(iconAlexa)
+
+    wrapper.appendChild(icons)
+
     return wrapper
   },
 
@@ -46,40 +74,49 @@ Module.register("MMM-Alexa", {
   },
 
   socketNotificationReceived: function(notification, payload) {
-    var alexaColor = document.getElementById("alexa")
+    var alexaStatus = document.getElementById("ALEXA_STATUS")
+    var iconGoogle = document.getElementById("ALEXA_ICONS_GOOGLE")
+    var iconAlexa = document.getElementById("ALEXA_ICONS_ALEXA")
+
     switch (notification) {
       case "ALEXA_TOKEN":
-        alexaColor.className = "alexa-tokenSet"
-        this.init = true
+        alexaStatus.className = "Ready"
+        iconAlexa.classList.remove("busy")
+        this.status.Alexa.Initialized= true
         break
       case "ALEXA_START":
-        alexaColor.className = "alexa-recordStart"
+        alexaStatus.className = "Start"
+        if (this.status.Google.Initialized) iconGoogle.className= "busy"
         break
       case "ALEXA_STOP":
-        alexaColor.className = "alexa-recordStop"
+        alexaStatus.className = "Stop"
         this.audioChime.src = this.file("resources/end.wav")
         break
       case "ALEXA_ERROR":
+        alexaStatus.className = "Error"
         this.audioChime.src = this.file("resources/alert.mp3")
         break
       case "ALEXA_SPEAK":
         if (payload) {
-          alexaColor.className = "alexa-speak"
+          alexaStatus.className = "Speak"
           this.audioResponse.src = this.file(payload)+ "?seed=" + Date.now()
           this.audioResponse.addEventListener("ended", ()=>{
-            log("audio end")
-            alexaColor.className = "alexa-recordStop"
+            console.log("audio end")
+            alexaStatus.className = "Ready"
+            if (this.status.Google.Initialized) iconGoogle.classList.remove("busy")
             this.sendNotification("SNOWBOY_START")
           })
         } else {
-          alexaColor.className = "alexa-recordStop"
+          alexaStatus.className = "Ready"
+          if (this.status.Google.Initialized) iconGoogle.classList.remove("busy")
           this.sendNotification("SNOWBOY_START")
         }
         break
       case "ALEXA_BUSY":
-        alexaColor.className = "alexa-busy"
+        alexaStatus.className = "Busy"
         break
       case "ALEXA_ALERT":
+        alexaStatus.className = "Error"
         this.audioChime.src = this.file("resources/alert.mp3")
         console.log("[ALEXA] Alert:", payload, payload.indexOf("code"))
         this.sendNotification("SHOW_ALERT", {
@@ -98,11 +135,37 @@ Module.register("MMM-Alexa", {
         this.sendSocketNotification('SET_CONFIG', this.config)
         break
       case "ALEXA_ACTIVATE":
-        if (this.init) {
+        if (this.status.Alexa.Initialized) {
           this.audioChime.src = this.file("resources/start.wav")
           this.sendSocketNotification('START_RECORDING')
         }
         break
+      case "ASSISTANT_LISTEN":
+        var alexaStatus = document.getElementById("ALEXA_STATUS")
+        var iconAlexa = document.getElementById("ALEXA_ICONS_ALEXA")
+        if (this.status.Alexa.Initialized) {
+          iconAlexa.className= "busy"
+          alexaStatus.className = "BusyByGoogle"
+        }
+        break
+      case "ASSISTANT_STANDBY":
+        var alexaStatus = document.getElementById("ALEXA_STATUS")
+        var iconAlexa = document.getElementById("ALEXA_ICONS_ALEXA")
+        if (this.status.Alexa.Initialized) {
+          iconAlexa.classList.remove("busy")
+          alexaStatus.classList = "Ready"
+        }
+        break
+      case "ASSISTANT_READY":
+        var iconGoogle = document.getElementById("ALEXA_ICONS_GOOGLE")
+        iconGoogle.classList.remove("busy")
+        this.status.Google.Initialized = true
+        break
     }
+  },
+  GADetect: function() {
+    config.modules.forEach(module => {
+      if (module.module == "MMM-GoogleAssistant" && !module.disabled) this.status.Google.Detected = true
+    })
   }
 });
