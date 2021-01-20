@@ -3,6 +3,7 @@
 
 var NodeHelper = require("node_helper")
 const Alexa = require('@bugsounet/alexa')
+const Player = require("@bugsounet/native-sound")
 const fs = require("fs")
 const path = require("path")
 const moment = require("moment")
@@ -15,27 +16,55 @@ module.exports = NodeHelper.create({
     this.alexa= {}
     this.tokens= null
     this.alexa.init = false
+    this.snowboy = null
+    this.player= null
   },
   socketNotificationReceived: function(notification, payload) {
-    if(notification === 'SET_CONFIG'){
-      this.config = payload
-      this.initAlexa()
-    }
-    if (notification == "START_RECORDING" && this.alexa.init) {
-      this.alexa.avs.requestMic(__dirname+ "/tmp/request.wav")
+    switch (notification) {
+      case "SET_CONFIG":
+        this.config = payload
+        this.initAlexa()
+        break
+      case "START_RECORDING":
+        if (this.alexa.init) this.alexa.avs.requestMic(__dirname+ "/tmp/request.wav")
+       break
+      case "SNOWBOY_START":
+        this.snowboy.start()
+        break
+      case "PLAY_CHIME":
+        let filePathChime = path.resolve(__dirname, payload)
+        console.log(payload, filePathChime)
+        this.player.play(filePathChime, false)
+        break
+      case "PLAY_RESPONSE":
+        let filePathResponse = path.resolve(__dirname, payload)
+        this.player.play(filePathResponse)
     }
   },
 
   initAlexa: async function () {
     console.log("[ALEXA] MMM-Alexa Version:", require('./package.json').version)
     if (this.config.debug) log = (...args) => { console.log("[ALEXA]", ...args) }
+    if (this.config.snowboy.useSnowboy) this.initSnowboy()
     this.alexa.config= this.config.avs
     this.alexa.micConfig= this.config.micConfig
     console.log("[ALEXA] Config:", this.alexa.config)
     await this.initialize()
     await this.login()
+    if (this.config.audioConfig.useNative) {
+      this.player = new Player(this.config.audioConfig, (ended) => { this.sendSocketNotification("NATIVE_AUDIO_RESPONSE_END") } , this.config.debug )
+      console.log("[ALEXA] Use native program (" + this.config.audioConfig.playProgram + ") for audio response")
+      this.player.init()
+    }
     console.log("[ALEXA] Initilized!")
     this.alexa.init = true
+    if (this.config.snowboy.useSnowboy) this.snowboy.start()
+  },
+
+  initSnowboy: function() {
+    const Snowboy = require("@bugsounet/snowboy").Snowboy
+    this.snowboy = new Snowboy(this.config.snowboy, this.config.micConfig, (detected) => { this.AlexaDetected() } , this.config.debug )
+    this.snowboy.init()
   },
 
   initialize: function(){
@@ -43,9 +72,9 @@ module.exports = NodeHelper.create({
       clientId: this.alexa.config['ClientId'],
       clientSecret: this.alexa.config['ClientSecret'],
       deviceId: this.alexa.config['DeviceId'],
-      deviceSerialNumber: 1234,
+      deviceSerialNumber: this.alexa.config['deviceSerialNumber'],
       token: this.getTokens("Token"),
-      redirectUri: 'http://127.0.0.1:8080/MMM-Alexa/',
+      redirectUri: this.alexa.config['redirectUri'],
       refreshToken: this.getTokens("RefreshToken"),
       debug: this.config.debug,
       verbose: this.config.verbose
@@ -116,5 +145,13 @@ module.exports = NodeHelper.create({
           })
       }
     })
+  },
+
+  AlexaDetected: function() {
+    if (this.alexa.init) {
+      this.sendSocketNotification("ALEXA_ACTIVATE")
+      this.alexa.avs.requestMic(__dirname+ "/tmp/request.wav")
+    }
+    else this.snowboy.start()
   }
 });

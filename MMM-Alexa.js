@@ -9,7 +9,9 @@ Module.register("MMM-Alexa", {
       DeviceId: "Mirror",
       ClientId: "amzn1.application-oa2-client.XXX",
       ClientSecret: "XXX",
-      InitialCode: "XXX"
+      InitialCode: "XXX",
+      redirectUri: "http://127.0.0.1:8080/MMM-Alexa/",
+      deviceSerialNumber: 1234
     },
     micConfig: {
       sampleRate: "16000",
@@ -17,7 +19,27 @@ Module.register("MMM-Alexa", {
       exitOnSilence: 15,
       speechSampleDetect: 2000,
       device: "plughw:0"
-    }
+    },
+    snowboy: {
+      useSnowboy: true,
+      Sensitivity: null,
+      audioGain: 2.0,
+    },
+    visualConfig: {
+      useStatus: true,
+      useGO: true
+    },
+    audioConfig: {
+      useChime: true,
+      useNative: false,
+      playProgram: "mpg321"
+    },
+    NPMCheck: { //@toDo
+      useChecker: true,
+      delay: 10 * 60 * 1000,
+      useAlert: true
+    },
+    A2DServer: true //@toDo
   },
 
   start: function(){
@@ -35,21 +57,27 @@ Module.register("MMM-Alexa", {
         Initialized: false,
       }
     }
+    this.config.snowboy.Model= "alexa"
+    this.config.snowboy.Frontend = true
   },
 
   getDom: function() {
     this.GADetect()
     var wrapper = document.createElement('div')
     wrapper.id = "ALEXA-WRAPPER"
-    if (this.config['hideStatusIndicator']) wrapper.className = 'hidden'
 
+    var statusDisplay = document.createElement('div')
+    statusDisplay.id= "ALEXA_STATUS_DISPLAY"
+    if (!this.config.visualConfig.useStatus) statusDisplay.className = "hidden"
     var status = document.createElement('div')
     status.id= "ALEXA_STATUS"
     status.className = "notInitialized"
-    wrapper.appendChild(status)
+    statusDisplay.appendChild(status)
+    wrapper.appendChild(statusDisplay)
 
     var icons = document.createElement('div')
     icons.id= "ALEXA_ICONS"
+    if (!this.config.visualConfig.useGO) icons.className = "hidden"
 
     var iconGoogle = document.createElement('div')
     iconGoogle.id= "ALEXA_ICONS_GOOGLE"
@@ -79,6 +107,9 @@ Module.register("MMM-Alexa", {
     var iconAlexa = document.getElementById("ALEXA_ICONS_ALEXA")
 
     switch (notification) {
+      case "ALEXA_ACTIVATE":
+        this.playChime("resources/start.mp3")
+        break
       case "ALEXA_TOKEN":
         alexaStatus.className = "Ready"
         iconAlexa.classList.remove("busy")
@@ -90,26 +121,21 @@ Module.register("MMM-Alexa", {
         break
       case "ALEXA_STOP":
         alexaStatus.className = "Stop"
-        this.audioChime.src = this.file("resources/end.wav")
+        this.playChime("resources/end.mp3")
         break
       case "ALEXA_ERROR":
         alexaStatus.className = "Error"
-        this.audioChime.src = this.file("resources/alert.mp3")
+        this.playChime("resources/alert.mp3")
         break
       case "ALEXA_SPEAK":
         if (payload) {
           alexaStatus.className = "Speak"
-          this.audioResponse.src = this.file(payload)+ "?seed=" + Date.now()
-          this.audioResponse.addEventListener("ended", ()=>{
-            console.log("audio end")
-            alexaStatus.className = "Ready"
-            if (this.status.Google.Initialized) iconGoogle.classList.remove("busy")
-            this.sendNotification("SNOWBOY_START")
-          })
+          this.playResponse(payload)
         } else {
           alexaStatus.className = "Ready"
           if (this.status.Google.Initialized) iconGoogle.classList.remove("busy")
-          this.sendNotification("SNOWBOY_START")
+          if (!this.config.snowboy.useSnowboy) this.sendNotification("SNOWBOY_START")
+          else this.sendSocketNotification("SNOWBOY_START")
         }
         break
       case "ALEXA_BUSY":
@@ -117,7 +143,7 @@ Module.register("MMM-Alexa", {
         break
       case "ALEXA_ALERT":
         alexaStatus.className = "Error"
-        this.audioChime.src = this.file("resources/alert.mp3")
+        this.playChime("resources/alert.mp3")
         console.log("[ALEXA] Alert:", payload, payload.indexOf("code"))
         this.sendNotification("SHOW_ALERT", {
           type: "notification" ,
@@ -125,6 +151,12 @@ Module.register("MMM-Alexa", {
           title: "MMM-Alexa",
           timer: 0
         })
+        break
+      case "NATIVE_AUDIO_RESPONSE_END":
+        alexaStatus.className = "Ready"
+        if (this.status.Google.Initialized) iconGoogle.classList.remove("busy")
+        if (!this.config.snowboy.useSnowboy) this.sendNotification("SNOWBOY_START")
+        else this.sendSocketNotification("SNOWBOY_START")
         break
     }
   },
@@ -135,9 +167,9 @@ Module.register("MMM-Alexa", {
         this.sendSocketNotification('SET_CONFIG', this.config)
         break
       case "ALEXA_ACTIVATE":
-        if (this.status.Alexa.Initialized) {
-          this.audioChime.src = this.file("resources/start.wav")
-          this.sendSocketNotification('START_RECORDING')
+        if (this.status.Alexa.Initialized && !this.config.snowboy.useSnowboy) {
+          this.playChime("resources/start.wav")
+          if (!this.config.snowboy.useSnowboy) this.sendSocketNotification('START_RECORDING')
         }
         break
       case "ASSISTANT_LISTEN":
@@ -167,5 +199,24 @@ Module.register("MMM-Alexa", {
     config.modules.forEach(module => {
       if (module.module == "MMM-GoogleAssistant" && !module.disabled) this.status.Google.Detected = true
     })
+  },
+
+  playChime: function(file) {
+    if (!this.config.audioConfig.useChime) return
+    if (this.config.audioConfig.useNative) this.sendSocketNotification("PLAY_CHIME", file)
+    else this.audioChime.src = this.file(file)
+  },
+
+  playResponse: function(file) {
+    if (this.config.audioConfig.useNative) this.sendSocketNotification("PLAY_RESPONSE", file)
+    else {
+      this.audioResponse.src = this.file(file)+ "?seed=" + Date.now()
+      this.audioResponse.addEventListener("ended", ()=>{
+        alexaStatus.className = "Ready"
+        if (this.status.Google.Initialized) iconGoogle.classList.remove("busy")
+        if (!this.config.snowboy.useSnowboy) this.sendNotification("SNOWBOY_START")
+        else this.sendSocketNotification("SNOWBOY_START")
+      })
+    }
   }
 });
