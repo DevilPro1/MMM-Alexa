@@ -34,7 +34,7 @@ Module.register("MMM-Alexa", {
       useNative: false,
       playProgram: "mpg321"
     },
-    NPMCheck: { //@toDo
+    NPMCheck: {
       useChecker: true,
       delay: 10 * 60 * 1000,
       useAlert: true
@@ -50,7 +50,7 @@ Module.register("MMM-Alexa", {
     this.init = false
     this.status = {
       "Alexa": {
-        Initialized: false,
+        Initialized: false
       },
       "Google": {
         Detected: false,
@@ -158,6 +158,21 @@ Module.register("MMM-Alexa", {
         if (!this.config.snowboy.useSnowboy) this.sendNotification("SNOWBOY_START")
         else this.sendSocketNotification("SNOWBOY_START")
         break
+      case "NPM_UPDATE":
+        if (payload && payload.length > 0) {
+          if (this.config.NPMCheck.useAlert) {
+            payload.forEach(npm => {
+              this.sendNotification("SHOW_ALERT", {
+                type: "notification" ,
+                message: "[NPM] " + npm.library + " v" + npm.installed +" -> v" + npm.latest,
+                title: this.translate("UPDATE_NOTIFICATION_MODULE", { MODULE_NAME: npm.module }),
+                timer: this.getUpdateTime(this.config.NPMCheck.delay) - 2000
+              })
+            })
+          }
+          this.sendNotification("NPM_UPDATE", payload)
+        }
+        break
     }
   },
 
@@ -210,6 +225,8 @@ Module.register("MMM-Alexa", {
   playResponse: function(file) {
     if (this.config.audioConfig.useNative) this.sendSocketNotification("PLAY_RESPONSE", file)
     else {
+      var alexaStatus = document.getElementById("ALEXA_STATUS")
+      var iconGoogle = document.getElementById("ALEXA_ICONS_GOOGLE")
       this.audioResponse.src = this.file(file)+ "?seed=" + Date.now()
       this.audioResponse.addEventListener("ended", ()=>{
         alexaStatus.className = "Ready"
@@ -218,5 +235,41 @@ Module.register("MMM-Alexa", {
         else this.sendSocketNotification("SNOWBOY_START")
       })
     }
+  },
+
+  /** convert h m s to ms **/
+  getUpdateTime: function(str) {
+    let ms = 0, time, type, value
+    let time_list = ('' + str).split(' ').filter(v => v != '' && /^(\d{1,}\.)?\d{1,}([wdhms])?$/i.test(v))
+
+    for (let i = 0, len = time_list.length; i < len; i++) {
+      time = time_list[i]
+      type = time.match(/[wdhms]$/i)
+
+      if (type) {
+        value = Number(time.replace(type[0], ''))
+
+        switch(type[0].toLowerCase()){
+          case 'w':
+            ms += value * 604800000
+            break
+          case 'd':
+            ms += value * 86400000
+            break
+          case 'h':
+            ms += value * 3600000
+            break
+          case 'm':
+            ms += value * 60000
+            break
+          case 's':
+            ms += value * 1000
+          break
+        }
+      } else if(!isNaN(parseFloat(time)) && isFinite(time)){
+        ms += parseFloat(time)
+      }
+    }
+    return ms
   }
 });

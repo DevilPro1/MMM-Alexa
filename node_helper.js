@@ -2,8 +2,9 @@
 /** @bugsounet 17/01/2021 **/
 
 var NodeHelper = require("node_helper")
-const Alexa = require('@bugsounet/alexa')
+const Alexa = require("@bugsounet/alexa")
 const Player = require("@bugsounet/native-sound")
+const npmCheck = require("@bugsounet/npmcheck")
 const fs = require("fs")
 const path = require("path")
 const moment = require("moment")
@@ -18,6 +19,7 @@ module.exports = NodeHelper.create({
     this.alexa.init = false
     this.snowboy = null
     this.player= null
+    /** check if update of npm Library needed **/
   },
   socketNotificationReceived: function(notification, payload) {
     switch (notification) {
@@ -45,6 +47,15 @@ module.exports = NodeHelper.create({
   initAlexa: async function () {
     console.log("[ALEXA] MMM-Alexa Version:", require('./package.json').version)
     if (this.config.debug) log = (...args) => { console.log("[ALEXA]", ...args) }
+    if (this.config.NPMCheck.useChecker) {
+      var cfg = {
+        dirName: __dirname,
+        moduleName: this.name,
+        timer: this.getUpdateTime(this.config.NPMCheck.delay),
+        debug: this.config.debug
+      }
+      this.Checker= new npmCheck(cfg, update => { this.sendSocketNotification("NPM_UPDATE", update)} )
+    }
     if (this.config.snowboy.useSnowboy) this.initSnowboy()
     this.alexa.config= this.config.avs
     this.alexa.micConfig= this.config.micConfig
@@ -153,5 +164,41 @@ module.exports = NodeHelper.create({
       this.alexa.avs.requestMic(__dirname+ "/tmp/request.wav")
     }
     else this.snowboy.start()
+  },
+
+  /** convert h m s to ms **/
+  getUpdateTime: function(str) {
+    let ms = 0, time, type, value
+    let time_list = ('' + str).split(' ').filter(v => v != '' && /^(\d{1,}\.)?\d{1,}([wdhms])?$/i.test(v))
+
+    for (let i = 0, len = time_list.length; i < len; i++) {
+      time = time_list[i]
+      type = time.match(/[wdhms]$/i)
+
+      if (type) {
+        value = Number(time.replace(type[0], ''))
+
+        switch(type[0].toLowerCase()){
+          case 'w':
+            ms += value * 604800000
+            break
+          case 'd':
+            ms += value * 86400000
+            break
+          case 'h':
+            ms += value * 3600000
+            break
+          case 'm':
+            ms += value * 60000
+            break
+          case 's':
+            ms += value * 1000
+          break
+        }
+      } else if(!isNaN(parseFloat(time)) && isFinite(time)){
+        ms += parseFloat(time)
+      }
+    }
+    return ms
   }
 });

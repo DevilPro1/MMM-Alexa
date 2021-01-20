@@ -25,6 +25,7 @@
     "@bugsounet/alexa": "^0.1.0",
     "@bugsounet/native-sound": "^1.0.0",
     "@bugsounet/node-lpcm16": "^2.0.0",
+    "@bugsounet/npmcheck": "^0.9.91",
     "@bugsounet/snowboy": "^2.0.1"
   }
 }
