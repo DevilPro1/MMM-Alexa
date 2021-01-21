@@ -110,8 +110,14 @@ module.exports = NodeHelper.create({
       this.tokens = require(file)
       return this.tokens[token] ? this.tokens[token] : null
     } else {
-      //@todo create file
-      console.error("[ALEXA:ERROR] Token not found!", file)
+      var file = path.resolve(__dirname, "tokens.json")
+      var firstToken = {
+        Token: null,
+        RefreshToken: null,
+        InitialCode: null
+      }
+      fs.writeFileSync(file, JSON.stringify(firstToken))
+      console.error("[ALEXA] Token File created:", file)
       return null
     }
   },
