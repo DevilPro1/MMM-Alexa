@@ -39,7 +39,7 @@ Module.register("MMM-Alexa", {
       delay: 10 * 60 * 1000,
       useAlert: true
     },
-    A2DServer: true //@toDo
+    A2DServer: false
   },
 
   start: function(){
@@ -136,6 +136,7 @@ Module.register("MMM-Alexa", {
           if (this.status.Google.Initialized) iconGoogle.classList.remove("busy")
           if (!this.config.snowboy.useSnowboy) this.sendNotification("SNOWBOY_START")
           else this.sendSocketNotification("SNOWBOY_START")
+          if (this.config.A2DServer) this.A2DServer("ALEXA_STANDBY")
         }
         break
       case "ALEXA_BUSY":
@@ -153,6 +154,7 @@ Module.register("MMM-Alexa", {
         })
         break
       case "NATIVE_AUDIO_RESPONSE_END":
+        if (this.config.A2DServer) this.A2DServer("ALEXA_STANDBY")
         alexaStatus.className = "Ready"
         if (this.status.Google.Initialized) iconGoogle.classList.remove("busy")
         if (!this.config.snowboy.useSnowboy) this.sendNotification("SNOWBOY_START")
@@ -174,6 +176,7 @@ Module.register("MMM-Alexa", {
         }
         break
     }
+    if (notification.startsWith("ALEXA_") && this.config.A2DServer) this.A2DServer(notification)
   },
 
   notificationReceived: function(notification, payload) {
@@ -183,7 +186,8 @@ Module.register("MMM-Alexa", {
         break
       case "ALEXA_ACTIVATE":
         if (this.status.Alexa.Initialized && !this.config.snowboy.useSnowboy) {
-          this.playChime("resources/start.wav")
+          this.playChime("resources/start.mp3")
+          if (this.config.A2DServer) this.A2DServer("ALEXA_ACTIVATE")
           if (!this.config.snowboy.useSnowboy) this.sendSocketNotification('START_RECORDING')
         }
         break
@@ -229,11 +233,30 @@ Module.register("MMM-Alexa", {
       var iconGoogle = document.getElementById("ALEXA_ICONS_GOOGLE")
       this.audioResponse.src = this.file(file)+ "?seed=" + Date.now()
       this.audioResponse.addEventListener("ended", ()=>{
+        if (this.config.A2DServer) this.A2DServer("ALEXA_STANDBY")
         alexaStatus.className = "Ready"
         if (this.status.Google.Initialized) iconGoogle.classList.remove("busy")
         if (!this.config.snowboy.useSnowboy) this.sendNotification("SNOWBOY_START")
         else this.sendSocketNotification("SNOWBOY_START")
       })
+    }
+  },
+
+  A2DServer: function(type) {
+    switch (type) {
+      case "ALEXA_ACTIVATE":
+        this.sendNotification("ALEXA_LISTEN")
+        this.sendNotification("A2D_ASSISTANT_BUSY")
+        break
+      case "ALEXA_TOKEN":
+        this.sendNotification("ALEXA_READY")
+        break
+      case "ALEXA_SPEAK":
+        this.sendNotification("ALEXA_SPEAK")
+      case "ALEXA_STANDBY":
+        this.sendNotification("ALEXA_STANDBY")
+        this.sendNotification("A2D_ASSISTANT_READY")
+        break
     }
   },
 
