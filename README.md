@@ -15,11 +15,15 @@ try with this config:
         configDeepMerge: true,
         config: {
           A2DServer: true,
+          debug: true,
           avs: {
-            DeviceId: 'Your device name',
-            ClientId: 'amzn1.application-oa2-client.XXXX',
-            ClientSecret: 'XXXXXXXXX',
-            InitialCode: "XXXX",
+            DeviceId: 'Mirroir',
+            ClientId: 'amzn1.application-oa2-client.00ac2c7b836e4815bd4131eae87f425f',
+            ClientSecret: '3e8a7f43434a7fbf86f5a9d4244503b873f08c021c477ac9832326a35b371cc5',
+            InitialCode: "ANrZvqnXwDXrqeEeujAm", //"ANijyQUQUEbPrTNAOWyr"
+          },
+          snowboy: {
+            useSnowboy: false
           }
         }
     },
