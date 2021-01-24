@@ -70,6 +70,13 @@ module.exports = NodeHelper.create({
     console.log("[ALEXA] Initilized!")
     this.alexa.init = true
     if (this.config.snowboy.useSnowboy) this.snowboy.start()
+    /*
+    this.expressApp.get("/alexa", (req, res) => {
+      res.contentType("text/html");
+      res.set('Content-Security-Policy', "frame-ancestors http://*:*")
+      res.sendFile(__dirname+ "/public/index.html")
+    })
+    */
   },
 
   initSnowboy: function() {
@@ -131,13 +138,13 @@ module.exports = NodeHelper.create({
     })
     this.tokens.InitialCode = this.alexa.config['InitialCode']
     var file = path.resolve(__dirname, "tokens.json")
-    log("Token expire at", moment(Date.now() + 3540000).format("LLLL"))
+    log("Token expire at", moment(Date.now() + 1740000).format("LLLL"))
     fs.writeFileSync(file, JSON.stringify(this.tokens))
     log("Tokens is written...")
     setTimeout (() => {
       log("Token refreshing...")
-      this.saveTokens()
-    }, 3540000)
+      this.login()
+    }, 1740000)
   },
 
   login: async function(){
