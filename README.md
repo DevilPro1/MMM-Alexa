@@ -4,3 +4,31 @@
  * It will allow to have GoogleAssisant and Alexa in the Mirror ! (not possible actually)
 
 ![](https://raw.githubusercontent.com/bugsounet/coding/main/underconstruction.gif)
+
+try with this config:
+
+```js
+    {
+        disabled: false,
+        module: 'MMM-Alexa',
+        position: 'top_left',
+        configDeepMerge: true,
+        config: {
+          A2DServer: true,
+          avs: {
+            DeviceId: 'Your Device Name',
+            ClientId: 'amzn1.application-oa2-client.xxx',
+            ClientSecret: 'xxxx',
+            InitialCode: "xxx",
+          },
+          snowboy: {
+            useSnowboy: false
+          },
+          micConfig: {
+            exitOnSilence: 15,
+            speechSampleDetect: 2000,
+            device: "plughw:0"
+          },
+        }
+    },
+ ```
