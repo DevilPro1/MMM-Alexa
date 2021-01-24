@@ -23,7 +23,12 @@ try with this config:
           },
           snowboy: {
             useSnowboy: false
-          }
+          },
+          micConfig: {
+            exitOnSilence: 15,
+            speechSampleDetect: 2000,
+            device: "plughw:0"
+          },
         }
     },
  ```
