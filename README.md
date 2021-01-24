@@ -15,7 +15,6 @@ try with this config:
         configDeepMerge: true,
         config: {
           A2DServer: true,
-          debug: true,
           avs: {
             DeviceId: 'Your Device Name',
             ClientId: 'amzn1.application-oa2-client.xxx',
