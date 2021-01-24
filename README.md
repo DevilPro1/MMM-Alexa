@@ -17,7 +17,7 @@ try with this config:
           A2DServer: true,
           debug: true,
           avs: {
-            DeviceId: 'Mirroir',
+            DeviceId: 'Your Device Name',
             ClientId: 'amzn1.application-oa2-client.xxx',
             ClientSecret: 'xxxx',
             InitialCode: "xxx",
