@@ -18,9 +18,9 @@ try with this config:
           debug: true,
           avs: {
             DeviceId: 'Mirroir',
-            ClientId: 'amzn1.application-oa2-client.00ac2c7b836e4815bd4131eae87f425f',
-            ClientSecret: '3e8a7f43434a7fbf86f5a9d4244503b873f08c021c477ac9832326a35b371cc5',
-            InitialCode: "ANrZvqnXwDXrqeEeujAm", //"ANijyQUQUEbPrTNAOWyr"
+            ClientId: 'amzn1.application-oa2-client.xxx',
+            ClientSecret: 'xxxx',
+            InitialCode: "xxx",
           },
           snowboy: {
             useSnowboy: false
