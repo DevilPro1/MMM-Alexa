@@ -232,13 +232,22 @@ Module.register("MMM-Alexa", {
       var alexaStatus = document.getElementById("ALEXA_STATUS")
       var iconGoogle = document.getElementById("ALEXA_ICONS_GOOGLE")
       this.audioResponse.src = this.file(file)+ "?seed=" + Date.now()
-      this.audioResponse.addEventListener("ended", ()=>{
+      this.audioResponse.onended = ()=>{
         if (this.config.A2DServer) this.A2DServer("ALEXA_STANDBY")
         alexaStatus.className = "Ready"
         if (this.status.Google.Initialized) iconGoogle.classList.remove("busy")
         if (!this.config.snowboy.useSnowboy) this.sendNotification("SNOWBOY_START")
         else this.sendSocketNotification("SNOWBOY_START")
-      })
+      }
+      this.audioResponse.onerror= (err)=>{
+        // generaly when reponse is empty
+        if (this.config.debug) console.log("[ALEXA] Warn: Empty File or Error", err)
+        if (this.config.A2DServer) this.A2DServer("ALEXA_STANDBY")
+        alexaStatus.className = "Ready"
+        if (this.status.Google.Initialized) iconGoogle.classList.remove("busy")
+        if (!this.config.snowboy.useSnowboy) this.sendNotification("SNOWBOY_START")
+        else this.sendSocketNotification("SNOWBOY_START")
+      }
     }
   },
 
@@ -253,6 +262,7 @@ Module.register("MMM-Alexa", {
         break
       case "ALEXA_SPEAK":
         this.sendNotification("ALEXA_SPEAK")
+        break
       case "ALEXA_STANDBY":
         this.sendNotification("ALEXA_STANDBY")
         this.sendNotification("A2D_ASSISTANT_READY")
