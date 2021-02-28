@@ -43,10 +43,6 @@ Module.register("MMM-Alexa", {
   },
 
   start: function(){
-    this.audioChime = new Audio()
-    this.audioChime.autoplay = true
-    this.audioResponse = new Audio()
-    this.audioResponse.autoplay = true
     this.init = false
     this.status = {
       "Alexa": {
@@ -59,6 +55,12 @@ Module.register("MMM-Alexa", {
     }
     this.config.snowboy.Model= "alexa"
     this.config.snowboy.Frontend = true
+    if (!this.config.audioConfig.useNative) {
+      this.audioChime = new Audio()
+      this.audioChime.autoplay = true
+      this.audioResponse = new Audio()
+      this.audioResponse.autoplay = true
+    }
   },
 
   getDom: function() {
