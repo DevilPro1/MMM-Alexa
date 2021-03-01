@@ -1,5 +1,17 @@
 <html>
   <head>
+  <style>
+  body {
+	background-image: url('background1.png');
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: cover;
+	background-attachment: fixed;
+  }
+  .text {
+	color:#FFF;
+  }  
+  </style>
     <script type="text/javascript">
       function getUri() {
         return window.location.href.split('?')[0];
@@ -47,10 +59,11 @@
         }
       });
     </script>
-  </head>
+  </head>  
   <body>
-    <h1>Code generator for AVS Authentication</h1>
-    <div id= "request">
+  <div class="text">
+    <h1><img src="alexa.gif" width="50px" height="50px" align="center"/> Code generator for AVS Authentication</h1>
+	<div id= "request">
       <div id= "uri"></div>
       Client id: <input id="clientId" size="60"/><br/>
       Device id: <input id="deviceId" size="60"/><br/>
@@ -59,5 +72,6 @@
       <br/><br/>
     </div>
     <div id="code"></div>
+  </div>
   </body>
 </html>
