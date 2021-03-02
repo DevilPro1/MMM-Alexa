@@ -1,5 +1,7 @@
 <html>
   <head>
+  <meta charset="UTF-8">
+  <title>MMM-Alexa ~ Code generator for AVS Authentication</title>
   <style>
   body {
 	background-image: url('background1.png');
@@ -53,25 +55,51 @@
         var requestedUri= document.getElementById('uri')
         if (initialCode){
           request.style.display = "none";
-          document.getElementById('code').innerHTML = "Your Initial Code: " + "<b>" + initialCode + "</b>";
-        } else {
-          document.getElementById('uri').innerHTML = "Don't forget to add <i>"+ getUri() + "</i> to security list.<br/><br/>"
+          document.getElementById('code').innerHTML = "Your InitialCode: " + "<b>" + initialCode + "</b>";
         }
       });
     </script>
   </head>  
   <body>
-  <div class="text">
-    <h1><img src="alexa.gif" width="50px" height="50px" align="center"/> Code generator for AVS Authentication</h1>
-	<div id= "request">
+  <div style="min-height: calc(100vh - 50px);" class="text">
+    <h1><img style="margin-right:10px" src="alexa.gif" width="50px" height="50px" align="center"/>Code generator for AVS Authentication</h1>
+    <div id= "request">
       <div id= "uri"></div>
-      Client id: <input id="clientId" size="60"/><br/>
-      Device id: <input id="deviceId" size="60"/><br/>
-      Device serial number: <input id="deviceSerialNumber" value="1234"/><br/>
-      <input type="button" id="request_code" value="Request code" onClick="requestCode();"/>
-      <br/><br/>
+      <div>
+        <p>Welcome to the inital code generator for MMM-Alexa<br><br>
+      </div>
+      <div>
+        <table>
+          <tbody>
+            <tr>
+              <td style="color:#fff;text-align: center;">Client ID</td>
+              <td><input id="clientId" size="60"/></td>
+            </tr>
+            <tr>
+              <td style="color:#fff;text-align: center;">Product ID</td>
+              <td><input id="deviceId" size="60"/></td>
+            </tr>
+            <tr>
+              <td style="color:#fff;width: 150px;text-align: center;">Device serial number</td>
+              <td><input id="deviceSerialNumber" value="1234"/></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <p><br>This generator will allow to link MMM-Alexa to your amazon account.<br>
+        It will return the initial code for your module configuration (InitialCode).
+        </p>
+      </div>
+      <input type="button" id="request_code" value="Request your InitialCode" onClick="requestCode();"/>
+      <div>
+        <p>You can get support in <A href="http://forum.bugsounet.fr" style="color: dodgerblue;">4th Party modules</A></p>
+      </div>
     </div>
     <div id="code"></div>
   </div>
+  <footer style="height: 10px;color: #fff">
+    <p>Designed by @2hdlockness ~ ©bugsounet.fr 2021 ~</p>
+  </footer>
   </body>
 </html>
