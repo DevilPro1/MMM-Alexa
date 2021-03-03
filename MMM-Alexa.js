@@ -6,12 +6,12 @@ Module.register("MMM-Alexa", {
     debug: false,
     verbose: false,
     avs: {
-      DeviceId: "Mirror",
-      ClientId: "amzn1.application-oa2-client.XXX",
+      ProductID: "Mirror",
+      ClientID: "amzn1.application-oa2-client.XXX",
       ClientSecret: "XXX",
       InitialCode: "XXX",
-      redirectUri: "http://127.0.0.1:8080/MMM-Alexa/",
-      deviceSerialNumber: 1234
+      deviceSerialNumber: 1234,
+      redirectUri: "http://alexa.bugsounet.fr/index.html"
     },
     micConfig: {
       sampleRate: "16000",
@@ -150,7 +150,7 @@ Module.register("MMM-Alexa", {
         console.log("[ALEXA] Alert:", payload, payload.indexOf("code"))
         this.sendNotification("SHOW_ALERT", {
           type: "notification" ,
-          message: payload.indexOf("code") > 0 ? "Configuration needed, Please Open http://127.0.0.1:8080/MMM-Alexa" : payload,
+          message: payload.indexOf("code") > 0 ? "Configuration needed, Please Open http://alexa.bugsounet.fr/" : payload,
           title: "MMM-Alexa",
           timer: 0
         })

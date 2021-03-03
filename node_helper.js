@@ -19,8 +19,8 @@ module.exports = NodeHelper.create({
     this.alexa.init = false
     this.snowboy = null
     this.player= null
-    /** check if update of npm Library needed **/
   },
+
   socketNotificationReceived: function(notification, payload) {
     switch (notification) {
       case "SET_CONFIG":
@@ -87,9 +87,9 @@ module.exports = NodeHelper.create({
 
   initialize: function(){
     this.alexa.avs = new Alexa({
-      clientId: this.alexa.config['ClientId'],
+      clientId: this.alexa.config['ClientID'],
       clientSecret: this.alexa.config['ClientSecret'],
-      deviceId: this.alexa.config['DeviceId'],
+      deviceId: this.alexa.config['ProductID'],
       deviceSerialNumber: this.alexa.config['deviceSerialNumber'],
       token: this.getTokens("Token"),
       redirectUri: this.alexa.config['redirectUri'],
