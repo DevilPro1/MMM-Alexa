@@ -35,7 +35,7 @@ git reset --hard HEAD
 git pull
 #fresh package.json
 git checkout package.json
-cd ~/MagicMirror/modules/MMM-GoogleAssistant/node_modules
+cd ~/MagicMirror/modules/MMM-Alexa/node_modules
 
 Installer_info "Deleting ALL @bugsounet libraries..."
 
