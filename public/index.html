@@ -1,19 +1,9 @@
+
 <html>
   <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="config.css" />
   <title>MMM-Alexa ~ Code generator for AVS Authentication</title>
-  <style>
-  body {
-	background-image: url('background1.png');
-	background-repeat: no-repeat;
-	background-position: center center;
-	background-size: cover;
-	background-attachment: fixed;
-  }
-  .text {
-	color:#FFF;
-  }  
-  </style>
     <script type="text/javascript">
       function getUri() {
         return window.location.href.split('?')[0];
@@ -62,38 +52,42 @@
   </head>  
   <body>
   <div style="min-height: calc(100vh - 50px);" class="text">
-    <h1><img style="margin-right:10px" src="alexa.gif" width="50px" height="50px" align="center"/>Code generator for AVS Authentication</h1>
+  <h1><img style="margin-right:10px" src="alexa.gif" width="50px" height="50px" align="center"/>Code generator for AVS Authentication</h1>
     <div id= "request">
       <div id= "uri"></div>
       <div>
-        <p>Welcome to the inital code generator for MMM-Alexa<br><br>
+        <p>Welcome to the inital code generator for MMM-Alexa<br>
       </div>
-      <div>
-        <table>
-          <tbody>
-            <tr>
-              <td style="color:#fff;text-align: center;">Client ID</td>
-              <td><input id="clientId" size="60"/></td>
-            </tr>
-            <tr>
-              <td style="color:#fff;text-align: center;">Product ID</td>
-              <td><input id="deviceId" size="60"/></td>
-            </tr>
-            <tr>
-              <td style="color:#fff;width: 150px;text-align: center;">Device serial number</td>
-              <td><input id="deviceSerialNumber" value="1234"/></td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="page">
+        <label class="field field_v2">
+          <input class="field__input" id="clientId" placeholder="Enter your Client Id here">
+          <span class="field__label-wrap">
+            <span class="field__label">Client Id</span>
+          </span>
+        </label>
+        <label class="field field_v2">
+          <input class="field__input" id="deviceId" placeholder="Enter your Device Id here">
+          <span class="field__label-wrap">
+            <span class="field__label">Device Id</span>
+          </span>
+        </label>
+        <label class="field field_v2">
+          <input class="field__input" id="deviceSerialNumber" placeholder="Enter your Device serial number here" value="1234">
+          <span class="field__label-wrap">
+            <span class="field__label">Device serial number</span>
+          </span>
+        </label>
       </div>
       <div>
         <p><br>This generator will allow to link MMM-Alexa to your amazon account.<br>
         It will return the initial code for your module configuration (InitialCode).
         </p>
       </div>
-      <input type="button" id="request_code" value="Request your InitialCode" onClick="requestCode();"/>
+      <div class="container">
+        <a href="#" class="btn" type="button" id="request_code" value="Request your InitialCode" onClick="requestCode();"/>REQUEST YOUR INTIALCODE</a>
+      </div>
       <div>
-        <p>You can get support in <A href="http://forum.bugsounet.fr" style="color: dodgerblue;">4th Party modules</A></p>
+        <p>You can get support in <a href="http://forum.bugsounet.fr" style="color: dodgerblue;">4th Party modules</a></p>
       </div>
     </div>
     <div id="code"></div>
