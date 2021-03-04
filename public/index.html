@@ -30,7 +30,6 @@
 
       function getParameterByName(name) {
           url = window.location.href;
-
           name = name.replace(/[\[\]]/g, "\\$&");
           var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)");
           var results = regex.exec(url);
@@ -51,8 +50,8 @@
     </script>
   </head>  
   <body>
-  <div style="min-height: calc(100vh - 50px);" class="text">
-  <h1><img style="margin-right:10px" src="alexa.gif" width="50px" height="50px" align="center"/>Code generator for AVS Authentication</h1>
+  <div class="text">
+  <h1><img class="alexa_icon" src="alexa.gif">Code generator for AVS Authentication</h1>
     <div id= "request">
       <div id= "uri"></div>
       <div>
@@ -87,12 +86,12 @@
         <a href="#" class="btn" type="button" id="request_code" value="Request your InitialCode" onClick="requestCode();"/>REQUEST YOUR INTIALCODE</a>
       </div>
       <div>
-        <p>You can get support in <a href="http://forum.bugsounet.fr" style="color: dodgerblue;">4th Party modules</a></p>
+        <p>You can get support in <a class="link" href="http://forum.bugsounet.fr">4th Party modules</a></p>
       </div>
     </div>
     <div id="code"></div>
   </div>
-  <footer style="height: 10px;color: #fff">
+  <footer class="footer">
     <p>Designed by @2hdlockness ~ ©bugsounet.fr 2021 ~</p>
   </footer>
   </body>
