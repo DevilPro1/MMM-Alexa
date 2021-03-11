@@ -12,6 +12,8 @@
     "assistant for device"
   ],
   "scripts": {
+    "preinstall": "installer/preinstall.sh",
+    "postinstall": "installer/postinstall.sh",
     "update": "installer/update.sh",
     "micConfig": "installer/micConfig.sh"
   },
