@@ -1,6 +1,31 @@
 # MMM-Alexa
 
- * You want to have Alexa in your mirror !?
- * It will allow to have GoogleAssisant and Alexa in the Mirror ! (not possible actually)
+![](https://raw.githubusercontent.com/bugsounet/MMM-Alexa/master/resources/Alexa.png)
 
-![](https://raw.githubusercontent.com/bugsounet/coding/main/underconstruction.gif)
+`MMM-Alexa` is an embedded Alexa echo on MagicMirror.
+
+This v1 is only audio reponse.
+I will work around visual and audio reponse soon (v2)
+
+MMM-Alexa can be used with MMM-GoogleAssistant (Dual-Assistant) or in self using mode
+
+## Installation, update & Guides
+Read the docs in [wiki](https://github.com/bugsounet/MMM-Alexa/wiki)<br>
+
+## [Dedicated Support is now open](http://forum.bugsounet.fr)
+
+## Last Tested
+- MagicMirror : 2.14.0
+- RPI 4 / raspbian 10 (buster)
+- debian 10
+
+## Credits
+- Author :
+  - @bugsounet
+- License : MIT
+
+## Donate
+ [Donate](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TTHRH94Y4KL36&source=url), if you love this module !
+
+## Thanks:
+ * @2hdlockness for design of alexa website.
