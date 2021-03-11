@@ -30,5 +30,5 @@ echo
 Installer_error "Support is now moved in a dedicated Server: http://forum.bugsounet.fr"
 Installer_warning "@bugsounet"
 echo
-Installer_exit "$Installer_module is now installed !"
+Installer_success "$Installer_module is now installed !"
 
