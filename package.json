@@ -1,6 +1,6 @@
 {
   "name": "MMM-Alexa",
-  "version": "0.9.0-dev",
+  "version": "1.0.0",
   "description": "An embedded Amazon Alexa on MagicMirror.",
   "main": "MMM-Alexa.js",
   "keywords": [
