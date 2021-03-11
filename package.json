@@ -1,0 +1,25 @@
+{
+  "name": "MMM-Alexa",
+  "description": "An embedded Amazon Alexa on MagicMirror.",
+  "scripts": {
+    "preinstall": "installer/preinstall.sh"
+  },
+  "keywords": [
+    "magic mirror",
+    "module",
+    "alexa",
+    "voice",
+    "embedded",
+    "assistant for device"
+  ],
+  "author": "bugsounet",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bugsounet/MMM-Alexa/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bugsounet/MMM-Alexa"
+  },
+  "homepage": "https://github.com/bugsounet/MMM-Alexa"
+}
