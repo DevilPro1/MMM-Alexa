@@ -48,3 +48,4 @@ git pull 2>/dev/null
 
 echo
 Installer_info "Installing all npm libraries..."
+npm prune
