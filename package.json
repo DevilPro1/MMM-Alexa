@@ -1,6 +1,6 @@
 {
   "name": "MMM-Alexa",
-  "version": "1.0.0-beta",
+  "version": "1.1.0",
   "description": "An embedded Amazon Alexa on MagicMirror.",
   "main": "MMM-Alexa.js",
   "keywords": [
@@ -29,7 +29,6 @@
   "homepage": "https://github.com/bugsounet/MMM-Alexa",
   "dependencies": {
     "@bugsounet/alexa": "^0.1.0",
-    "@bugsounet/native-sound": "^1.0.0",
     "@bugsounet/node-lpcm16": "^2.0.0",
     "@bugsounet/npmcheck": "^0.9.91",
     "@bugsounet/snowboy": "^2.0.5"
