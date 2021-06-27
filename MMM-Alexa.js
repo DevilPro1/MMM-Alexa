@@ -32,6 +32,7 @@ Module.register("MMM-Alexa", {
   start: function(){
     this.init = false
     this.Initialized= false
+    this.busy = false
     this.audioChime = new Audio()
     this.audioChime.autoplay = true
     this.audioResponse = new Audio()
@@ -105,13 +106,6 @@ Module.register("MMM-Alexa", {
           timer: 0
         })
         break
-      case "ASSISTANT_LISTEN":
-      case "ASSISTANT_THINK":
-        alexaStatus.className = "BusyByGoogle"
-        break
-      case "ASSISTANT_STANDBY":
-        alexaStatus.className = "Ready"
-        break
       case "NATIVE_AUDIO_RESPONSE_END":
         alexaStatus.className = "Ready"
         this.ended()
@@ -140,20 +134,27 @@ Module.register("MMM-Alexa", {
         this.sendSocketNotification('SET_CONFIG', this.config)
         break
       case "ALEXA_ACTIVATE":
-        if (this.Initialized) {
+        if (this.Initialized && !this.busy) {
           this.sendNotification("DETECTOR_STOP")
           this.playChime("resources/start.mp3")
           this.sendSocketNotification('START_RECORDING')
+          this.sendNotification("WAKEUP")
         }
         break
       case "ASSISTANT_THINK":
       case "ASSISTANT_LISTEN":
         var alexaStatus = document.getElementById("ALEXA_STATUS")
-        if (this.Initialized) alexaStatus.className = "BusyByGoogle"
+        if (this.Initialized) {
+          alexaStatus.className = "BusyByGoogle"
+          this.busy = true
+        }
         break
       case "ASSISTANT_STANDBY":
         var alexaStatus = document.getElementById("ALEXA_STATUS")
-        if (this.Initialized) alexaStatus.classList = "Ready"
+        if (this.Initialized) {
+          alexaStatus.classList = "Ready"
+          this.busy = false
+        }
         break
     }
   },
