@@ -3,7 +3,6 @@
 
 var NodeHelper = require("node_helper")
 const Alexa = require("@bugsounet/alexa")
-const Player = require("@bugsounet/native-sound")
 const npmCheck = require("@bugsounet/npmcheck")
 const fs = require("fs")
 const path = require("path")
@@ -17,8 +16,6 @@ module.exports = NodeHelper.create({
     this.alexa= {}
     this.tokens= null
     this.alexa.init = false
-    this.snowboy = null
-    this.player= null
   },
 
   socketNotificationReceived: function(notification, payload) {
@@ -30,17 +27,6 @@ module.exports = NodeHelper.create({
       case "START_RECORDING":
         if (this.alexa.init) this.alexa.avs.requestMic(__dirname+ "/tmp/request.wav")
        break
-      case "SNOWBOY_START":
-        this.snowboy.start()
-        break
-      case "PLAY_CHIME":
-        let filePathChime = path.resolve(__dirname, payload)
-        console.log(payload, filePathChime)
-        this.player.play(filePathChime, false)
-        break
-      case "PLAY_RESPONSE":
-        let filePathResponse = path.resolve(__dirname, payload)
-        this.player.play(filePathResponse)
     }
   },
 
@@ -56,33 +42,13 @@ module.exports = NodeHelper.create({
       }
       this.Checker= new npmCheck(cfg, update => { this.sendSocketNotification("NPM_UPDATE", update)} )
     }
-    if (this.config.snowboy.useSnowboy) this.initSnowboy()
     this.alexa.config= this.config.avs
     this.alexa.micConfig= this.config.micConfig
     console.log("[ALEXA] Config:", this.alexa.config)
     await this.initialize()
     await this.login()
-    if (this.config.audioConfig.useNative) {
-      this.player = new Player(this.config.audioConfig, (ended) => { this.sendSocketNotification("NATIVE_AUDIO_RESPONSE_END") } , this.config.debug )
-      console.log("[ALEXA] Use native program (" + this.config.audioConfig.playProgram + ") for audio response")
-      this.player.init()
-    }
     console.log("[ALEXA] Initilized!")
     this.alexa.init = true
-    if (this.config.snowboy.useSnowboy) this.snowboy.start()
-    /*
-    this.expressApp.get("/alexa", (req, res) => {
-      res.contentType("text/html");
-      res.set('Content-Security-Policy', "frame-ancestors http://*:*")
-      res.sendFile(__dirname+ "/public/index.html")
-    })
-    */
-  },
-
-  initSnowboy: function() {
-    const Snowboy = require("@bugsounet/snowboy").Snowboy
-    this.snowboy = new Snowboy(this.config.snowboy, this.config.micConfig, (detected) => { this.AlexaDetected() } , this.config.debug )
-    this.snowboy.init()
   },
 
   initialize: function(){
@@ -157,7 +123,8 @@ module.exports = NodeHelper.create({
           .then (() => resolve())
           .catch((error) => {
             this.sendSocketNotification("ALEXA_ALERT", error.toString())
-            console.error("[ALEXA] " + error)
+            console.error("[ALEXA] getTokenFromCode error !")
+            setTimeout(() => this.login(), 10000)
           })
       } else {
         this.alexa.avs.refreshToken()
@@ -165,7 +132,8 @@ module.exports = NodeHelper.create({
           .then (() => resolve())
           .catch((error) => {
             this.sendSocketNotification("ALEXA_ALERT", error.toString())
-            console.error("[ALEXA] " + error)
+            console.error("[ALEXA] refreshToken error !")
+            setTimeout(() => this.login(), 10000)
           })
       }
     })
@@ -176,7 +144,6 @@ module.exports = NodeHelper.create({
       this.sendSocketNotification("ALEXA_ACTIVATE")
       this.alexa.avs.requestMic(__dirname+ "/tmp/request.wav")
     }
-    else this.snowboy.start()
   },
 
   /** convert h m s to ms **/
