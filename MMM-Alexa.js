@@ -1,5 +1,5 @@
 /** MMM-Alexa **/
-/** @bugsounet 17/01/2021 **/
+/** @bugsounet 27/06/2021 **/
 
 Module.register("MMM-Alexa", {
   defaults: {
