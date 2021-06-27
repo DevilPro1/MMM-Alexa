@@ -10,7 +10,7 @@ I will work around visual and audio reponse soon (v2)
 MMM-Alexa can be used with MMM-GoogleAssistant (Dual-Assistant) or in self using mode
 
 ## Installation, update & Guides
-Read the docs in [wiki](https://github.com/bugsounet/MMM-Alexa/wiki)<br>
+Read the docs in [wiki](http://wiki.bugsounet.fr/MMM-Alexa)<br>
 
 ## [Dedicated Support is now open](http://forum.bugsounet.fr)
 
