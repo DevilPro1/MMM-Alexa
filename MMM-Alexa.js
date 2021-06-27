@@ -105,6 +105,13 @@ Module.register("MMM-Alexa", {
           timer: 0
         })
         break
+      case "ASSISTANT_LISTEN":
+      case "ASSISTANT_THINK":
+        alexaStatus.className = "BusyByGoogle"
+        break
+      case "ASSISTANT_STANDBY":
+        alexaStatus.className = "Ready"
+        break
       case "NATIVE_AUDIO_RESPONSE_END":
         alexaStatus.className = "Ready"
         this.ended()
