@@ -20,11 +20,6 @@ Module.register("MMM-Alexa", {
       speechSampleDetect: 2000,
       device: "default"
     },
-    snowboy: {
-      useSnowboy: true,
-      Sensitivity: null,
-      audioGain: 2.0,
-    },
     useStatus: true,
     useChime: true,
     NPMCheck: {
@@ -37,8 +32,6 @@ Module.register("MMM-Alexa", {
   start: function(){
     this.init = false
     this.Initialized= false
-    this.config.snowboy.Model= "alexa"
-    this.config.snowboy.Frontend = true
     this.audioChime = new Audio()
     this.audioChime.autoplay = true
     this.audioResponse = new Audio()
@@ -140,7 +133,7 @@ Module.register("MMM-Alexa", {
         this.sendSocketNotification('SET_CONFIG', this.config)
         break
       case "ALEXA_ACTIVATE":
-        if (this.Initialized && !this.config.snowboy.useSnowboy) {
+        if (this.Initialized) {
           this.sendNotification("DETECTOR_STOP")
           this.playChime("resources/start.mp3")
           this.sendSocketNotification('START_RECORDING')
@@ -183,8 +176,7 @@ Module.register("MMM-Alexa", {
   },
 
   ended: function (str) {
-    if (!this.config.snowboy.useSnowboy) this.sendNotification("DETECTOR_START")
-    else this.sendSocketNotification("SNOWBOY_START")
+    this.sendNotification("DETECTOR_START")
   },
 
   /** convert h m s to ms **/

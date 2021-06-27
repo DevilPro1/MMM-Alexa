@@ -16,7 +16,6 @@ module.exports = NodeHelper.create({
     this.alexa= {}
     this.tokens= null
     this.alexa.init = false
-    this.snowboy = null
   },
 
   socketNotificationReceived: function(notification, payload) {
@@ -28,9 +27,6 @@ module.exports = NodeHelper.create({
       case "START_RECORDING":
         if (this.alexa.init) this.alexa.avs.requestMic(__dirname+ "/tmp/request.wav")
        break
-      case "SNOWBOY_START":
-        this.snowboy.start()
-        break
     }
   },
 
@@ -46,7 +42,6 @@ module.exports = NodeHelper.create({
       }
       this.Checker= new npmCheck(cfg, update => { this.sendSocketNotification("NPM_UPDATE", update)} )
     }
-    if (this.config.snowboy.useSnowboy) this.initSnowboy()
     this.alexa.config= this.config.avs
     this.alexa.micConfig= this.config.micConfig
     console.log("[ALEXA] Config:", this.alexa.config)
@@ -54,20 +49,6 @@ module.exports = NodeHelper.create({
     await this.login()
     console.log("[ALEXA] Initilized!")
     this.alexa.init = true
-    if (this.config.snowboy.useSnowboy) this.snowboy.start()
-    /*
-    this.expressApp.get("/alexa", (req, res) => {
-      res.contentType("text/html");
-      res.set('Content-Security-Policy', "frame-ancestors http://*:*")
-      res.sendFile(__dirname+ "/public/index.html")
-    })
-    */
-  },
-
-  initSnowboy: function() {
-    const Snowboy = require("@bugsounet/snowboy").Snowboy
-    this.snowboy = new Snowboy(this.config.snowboy, this.config.micConfig, (detected) => { this.AlexaDetected() } , this.config.debug )
-    this.snowboy.init()
   },
 
   initialize: function(){
@@ -161,7 +142,6 @@ module.exports = NodeHelper.create({
       this.sendSocketNotification("ALEXA_ACTIVATE")
       this.alexa.avs.requestMic(__dirname+ "/tmp/request.wav")
     }
-    else this.snowboy.start()
   },
 
   /** convert h m s to ms **/
