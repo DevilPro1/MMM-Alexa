@@ -99,12 +99,15 @@ Module.register("MMM-Alexa", {
         alexaStatus.className = "Error"
         this.playChime("resources/alert.mp3")
         console.log("[ALEXA] Alert:", payload, payload.indexOf("code"))
-        this.sendNotification("SHOW_ALERT", {
-          type: "notification" ,
-          message: payload.indexOf("code") > 0 ? "Configuration needed, Please Open http://alexa.bugsounet.fr/" : payload,
-          title: "MMM-Alexa",
-          timer: 0
-        })
+        let message = payload.indexOf("code") > 0 ? "Configuration needed, Please Open http://alexa.bugsounet.fr/" : null
+        if (message) {
+          this.sendNotification("SHOW_ALERT", {
+            type: "notification" ,
+            message: message,
+            title: "MMM-Alexa",
+            timer: 0
+          })
+        }
         break
       case "NATIVE_AUDIO_RESPONSE_END":
         alexaStatus.className = "Ready"

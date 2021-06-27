@@ -123,7 +123,8 @@ module.exports = NodeHelper.create({
           .then (() => resolve())
           .catch((error) => {
             this.sendSocketNotification("ALEXA_ALERT", error.toString())
-            console.error("[ALEXA] " + error)
+            console.error("[ALEXA] getTokenFromCode error !")
+            setTimeout(() => this.login(), 10000)
           })
       } else {
         this.alexa.avs.refreshToken()
@@ -131,7 +132,8 @@ module.exports = NodeHelper.create({
           .then (() => resolve())
           .catch((error) => {
             this.sendSocketNotification("ALEXA_ALERT", error.toString())
-            console.error("[ALEXA] " + error)
+            console.error("[ALEXA] refreshToken error !")
+            setTimeout(() => this.login(), 10000)
           })
       }
     })
