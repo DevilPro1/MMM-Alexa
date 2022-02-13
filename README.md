@@ -1,5 +1,7 @@
 # MMM-Alexa
 
+## 2022/02/13: This module is now unmaintened and Archived
+
 ![](https://raw.githubusercontent.com/bugsounet/MMM-Alexa/master/resources/Alexa.png)
 
 `MMM-Alexa` is an embedded Alexa echo on MagicMirror.
