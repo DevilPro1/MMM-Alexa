@@ -1,301 +1,99 @@
-body {
-  background-image: url('./background.png');
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  background-attachment: fixed;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Open Sans, Ubuntu, Fira Sans, Helvetica Neue, sans-serif;
-  margin: 0;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="config.css" />
+    <title>MMM-Alexa ~ Code generator for AVS Authentication</title>
+    <script type="text/javascript">
+      function getUri() {
+        return window.location.href.split('?')[0];
+      }
 
-.text {
-  color:#fff;
-  min-height: calc(100vh - 50px);
-}
+      function requestCode(){
+        var clientId = document.getElementById('clientId').value;
+        var deviceId = document.getElementById('deviceId').value;
+        var deviceSerialNumber = document.getElementById('deviceSerialNumber').value;
+        var redirectUri = getUri()
 
-.link {
-  color: dodgerblue;
-}
+        var scopeData = {
+            "alexa:all": {
+                productID: deviceId,
+                productInstanceAttributes: {
+                    deviceSerialNumber: deviceSerialNumber
+                }
+            }
+        }
 
-.alexa_icon {
-  margin-right: 10px;
-  width: 50px;
-  height: 50px;
-  vertical-align: middle;
-}
+        var authUrl = "https://www.amazon.com/ap/oa?client_id=" + clientId + "&scope=alexa%3Aall&scope_data=" + encodeURIComponent(JSON.stringify(scopeData))+ "&response_type=code&redirect_uri=" + encodeURI(redirectUri);
+        window.location.href = authUrl;
+      }
 
-.field__input{
-  --uiFieldPlaceholderColor: var(--fieldPlaceholderColor, #767676);
+      function getParameterByName(name) {
+          url = window.location.href;
 
-  background-color: transparent;
-  border-radius: 0;
-  border: none;
+          name = name.replace(/[\[\]]/g, "\\$&");
+          var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)");
+          var results = regex.exec(url);
+          if (!results) return null;
+          if (!results[2]) return '';
+          return decodeURIComponent(results[2].replace(/\+/g, " "));
+      }
 
-  -webkit-appearance: none;
-  -moz-appearance: none;
-
-  font-family: inherit;
-  font-size: inherit;
-  color:#FFF;
-}
-
-.field__input:focus::-webkit-input-placeholder{
-  color: var(--uiFieldPlaceholderColor);
-}
-
-.field__input:focus::-moz-placeholder{
-  color: var(--uiFieldPlaceholderColor);
-}
-
-.field{
-  --uiFieldBorderWidth: var(--fieldBorderWidth, 2px);
-  --uiFieldPaddingRight: var(--fieldPaddingRight, 1rem);
-  --uiFieldPaddingLeft: var(--fieldPaddingLeft, 1rem);
-  --uiFieldBorderColorActive: var(--fieldBorderColorActive, rgba(22, 22, 22, 1));
-  display: var(--fieldDisplay, inline-flex);
-  position: relative;
-  font-size: var(--fieldFontSize, 1rem);
-}
-
-.field__input{
-  box-sizing: border-box;
-  width: var(--fieldWidth, 100%);
-  height: var(--fieldHeight, 3rem);
-  padding: var(--fieldPaddingTop, 1.25rem) var(--uiFieldPaddingRight) var(--fieldPaddingBottom, .5rem) var(--uiFieldPaddingLeft);
-  border-bottom: var(--uiFieldBorderWidth) solid var(--fieldBorderColor, rgba(0, 0, 0, .25));
-}
-
-.field__input:focus{
-  outline: none;
-}
-
-.field__input::-webkit-input-placeholder{
-  opacity: 0;
-  transition: opacity .2s ease-out;
-}
-
-.field__input::-moz-placeholder{
-  opacity: 0;
-  transition: opacity .2s ease-out;
-}
-
-.field__input:focus::-webkit-input-placeholder{
-  opacity: 1;
-  transition-delay: .2s;
-}
-
-.field__input:focus::-moz-placeholder{
-  opacity: 1;
-  transition-delay: .2s;
-}
-
-.field__label-wrap{
-  box-sizing: border-box;
-  pointer-events: none;
-  cursor: text;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-}
-
-.field__label-wrap::after{
-  content: "";
-  box-sizing: border-box;
-  width: 100%;
-  height: 0;
-  opacity: 0;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-}
-
-.field__input:focus ~ .field__label-wrap::after{
-  opacity: 1;
-}
-
-.field__label{
-  color:#FFF;
-  position: absolute;
-  left: var(--uiFieldPaddingLeft);
-  top: calc(50% - .5em);
-  line-height: 1;
-  font-size: var(--fieldHintFontSize, inherit);
-  transition: top .2s cubic-bezier(0.9, -0.15, 0.1, 1.15), opacity .2s ease-out, font-size .2s ease-out;
-  will-change: bottom, opacity, font-size;
-}
-
-.field__input:focus ~ .field__label-wrap .field__label,
-.field__input:not(:placeholder-shown) ~ .field__label-wrap .field__label{
-  --fieldHintFontSize: var(--fieldHintFontSizeFocused, .75rem);
-  top: var(--fieldHintTopHover, .25rem);
-}
-
-/*
-  effect
-*/
-
-.field_v2 .field__label-wrap{
-  overflow: hidden;
-}
-
-.field_v2 .field__label-wrap::after{
-  border-bottom: var(--uiFieldBorderWidth) solid var(--uiFieldBorderColorActive);
-  transform: translate3d(-105%, 0, 0);
-  will-change: transform, opacity;
-  transition: transform .285s ease-out .2s, opacity .2s ease-out .2s;
-}
-
-.field_v2 .field__input:focus ~ .field__label-wrap::after{
-  transform: translate3d(0, 0, 0);
-  transition-delay: 0;
-}
-
-.field{
-  --fieldBorderColor: #FFF;
-  --fieldBorderColorActive: #00C1E0;
-}
-
-.page{
-  box-sizing: border-box;
-  width: 100%;
-  max-width: 480px;
-  display: grid;
-  margin:0 auto 0 auto;
-}
-
-/*
-  button
-*/
-
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width:300px;
-  margin:0 auto 0 auto;
-}
-
-a {
-  font-size: 1.1rem;
-  padding: 0.2rem 0.2rem;
-  color: #fff;
-}
-
-.btn {
-  text-decoration: none;
-  border: 1px solid #FFF;
-  position: relative;
-  overflow: hidden;
-  border-radius:6px;
-}
-
-.btn:hover {
-  box-shadow: 1px 1px 25px 10px rgba(146, 148, 248, 0.4);
-}
-
-.btn:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    120deg,
-    transparent,
-    rgba(146, 148, 248, 0.4),
-    transparent
-  );
-  transition: all 650ms;
-}
-
-.btn:hover:before {
-  left: 100%;
-}
-
-/*
-  titre
-*/
-
-h1 {
-  text-align:left;
-  margin: 0.3em auto 0.5em auto;
-  font-weight: 600;
-  font-family: 'Titillium Web', sans-serif;
-  position: relative;
-  width:740px;
-  font-size: 36px;
-  line-height: 20px;
-  padding: 10px 10px 10px 1%;
-  color: #355681;
-  box-shadow:
-  inset 0 0 0 1px rgba(53,86,129, 0.4),
-  inset 0 0 5px rgba(53,86,129, 0.5),
-  inset 0px 40px 55px white;
-  border-radius: 50px 50px 50px 50px;
-  background:#FFF url('backgroundtitle.jpg') no-repeat center right;
-}
-
-.footer {
-  text-align:center;
-  height: 10px;
-  color: #FFF;
-}
-
-.backgroundform {
-  text-align:center;
-  margin: 0.3em auto 0.5em auto;
-  position: relative;
-  width:740px;
-  line-height: 20px;
-  padding: 10px 10px 10px 1%;
-  border-radius: 50px 50px 50px 50px;
-  background:#082B50;
-  opacity:0.9;
-  border: 0.2rem solid #fff;
-  box-shadow:
-    0 0 .5rem #fff,
-    inset 0 0 .5rem #fff,
-    0 0 2rem #08f,
-    inset 0 0 2rem #08f,
-    0 0 4rem #08f,
-    inset 0 0 4rem #08f;
-}
-
-.logo {
-  position: relative;
-  width:400px;
-  margin: 5em auto 0 auto;
-}
-
-.returncode {
-  text-align:center;
-  width:740px;
-  line-height: 100px;
-  font-size: 50px;
-  color: #fff;
-  margin: 2em auto 2em auto;
-  border-radius: 25px 25px 25px 25px;
-  -webkit-animation: glow 1.5s ease-in-out infinite alternate;
-  -moz-animation: glow 1.5s ease-in-out infinite alternate;
-  animation: glow 1.5s ease-in-out infinite alternate;
-  /*background-color:#082B50;
-  opacity:0.85;*/
-  box-shadow: -20px -20px 25px -10px #27c4ce,20px -20px 25px -10px #13d7ff,-20px 20px 25px -10px #27c4ce,20px 20px 25px -10px #13d7ff;
-}
-
-@-webkit-keyframes glow {
-  from {
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #60CAF4, 0 0 40px #60CAF4, 0 0 50px xyan, 0 0 60px #60CAF4, 0 0 70px #60CAF4;
-  }
-
-  to {
-    text-shadow: 0 0 20px #fff, 0 0 30px #60CAF4, 0 0 40px #60CAF4, 0 0 50px #60CAF4, 0 0 60px #60CAF4, 0 0 70px #60CAF4, 0 0 80px #60CAF4;
-  }
-}
-
+      document.addEventListener("DOMContentLoaded", function(event) {
+        var initialCode = getParameterByName('code');
+        var request= document.getElementById('request')
+        var requestedUri= document.getElementById('uri')
+        if (initialCode){
+          request.style.display = "none";
+          document.getElementById('code').innerHTML= "Your InitialCode:<br>" + initialCode;
+        }
+      });
+    </script>
+  </head>  
+  <body>
+    <div class="text">
+      <h1><img class="alexa_icon" src="alexa.gif">Code generator for AVS Authentication</h1>
+      <div class="backgroundform" id= "request">
+        <div id= "uri"></div>
+        <div>
+          <p>Welcome to the inital code generator for MMM-Alexa<br><br>
+        </div>
+        <div class="page">
+          <label class="field field_v2">
+            <input class="field__input" id="clientId" placeholder="Enter your Client Id here">
+            <span class="field__label-wrap">
+              <span class="field__label">Client ID</span>
+            </span>
+          </label>
+          <label class="field field_v2">
+            <input class="field__input" id="deviceId" placeholder="Enter your Product ID here">
+            <span class="field__label-wrap">
+              <span class="field__label">Product ID</span>
+            </span>
+          </label>
+          <label class="field field_v2">
+            <input class="field__input" id="deviceSerialNumber" value="1234">
+            <span class="field__label-wrap">
+              <span class="field__label">Device serial number</span>
+            </span>
+          </label>
+        </div>
+        <div>
+          <p><br>This generator will allow to link MMM-Alexa to your amazon account.<br>
+        It will return the initial code for your module configuration (InitialCode).
+          </p>
+        </div>
+        <div class="container">
+          <a href="#" class="btn" type="button" id="request_code" value="Request your InitialCode" onClick="requestCode();"/>REQUEST YOUR INTIALCODE</a>
+        </div>
+        <div>
+          <p>You can get support in <a class="link" href="http://forum.bugsounet.fr">4th Party modules</a></p>
+        </div>
+      </div>
+      <div class="returncode" id="code"></div>
+      <div class="logo"><img src="Alexa-logos.png" width="400px" height="130px"/></div>
+    </div>
+    <footer class="footer">
+      <p>Designed by @devilpro1 2021 ~</p>
+    </footer>
+  </body>
+</html>
