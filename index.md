@@ -59,7 +59,6 @@
         <div id= "uri"></div>
         <div>
           <p>Welcome to the inital code generator for MMM-Alexa<br><br>
-        </div>
         <div class="page">
           <label class="field field_v2">
             <input class="field__input" id="clientId" placeholder="Enter your Client Id here">
