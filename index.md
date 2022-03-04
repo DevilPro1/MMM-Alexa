@@ -85,11 +85,8 @@
           </p>
         </div>
         <div class="container">
-          <a href="#" class="btn" type="button" id="request_code" value="Request your InitialCode" onClick="requestCode();"/>REQUEST YOUR INTIALCODE</a>
+          <a href="#" class="btn" type="button" id="request_code" value="Request your InitialCode" onClick="requestCode();"/>REQUEST YOUR INTIALCODE
         </div>
-        <div>
-          <p>You can get support in <a class="link" href="http://forum.bugsounet.fr">4th Party modules</a></p>
-      </div>
       <div class="returncode" id="code"></div>
       <div class="logo"><img src="Alexa-logos.png" width="400px" height="130px"/>
     </div>
