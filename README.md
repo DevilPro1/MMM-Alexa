@@ -33,7 +33,7 @@ It will return the initial code for your module configuration (InitialCode).
 This code is needed for get the token of AVS (Alexa Voice Service)
 
 To make simple things I have code an HTML page (designed by @2hdlockness)
-you can get this code [there](http://alexa.bugsounet.fr)
+you can get this code [there](https://devilpro1.github.io/MMM-Alexa/#)
 
 > Notes:
 > `deviceSerialNumber` is set by default to `1234`, you can use this value, it's not really important
