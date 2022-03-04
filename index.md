@@ -93,7 +93,7 @@
         </div>
       </div>
       <div class="returncode" id="code"></div>
-      <div class="logo"><img src="Alexa-logos.png" width="400px" height="130px"/></div>
+      <div class="logo"><img src="Alexa-logos.png" width="400px" height="130px"/>
     </div>
     <footer class="footer">
       <p>Designed by @devilpro1 2021 ~</p>
