@@ -98,5 +98,3 @@
     <footer class="footer">
       <p>Designed by @devilpro1 2021 ~</p>
     </footer>
-  </body>
-</html>
