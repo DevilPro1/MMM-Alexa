@@ -88,7 +88,6 @@
           <a href="#" class="btn" type="button" id="request_code" value="Request your InitialCode" onClick="requestCode();"/>REQUEST YOUR INTIALCODE
         </div>
         <div>
-        </div>
       <div class="returncode" id="code"></div>
       <div class="logo"><img src="Alexa-logos.png" width="400px" height="130px"/>
     </div>
