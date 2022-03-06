@@ -286,6 +286,7 @@ h1 {
   animation: glow 1.5s ease-in-out infinite alternate;
   /*background-color:#082B50;
   opacity:0.85;*/
+  box-shadow: -20px -20px 25px -10px #27c4ce,20px -20px 25px -10px #13d7ff,-20px 20px 25px -10px #27c4ce,20px 20px 25px -10px #13d7ff;
 }
 
 @-webkit-keyframes glow {
