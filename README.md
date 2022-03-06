@@ -23,7 +23,7 @@ npm install
 ```
 # Amazon Account linking
 
-See this [wiki](/MMM-Alexa/AmazonAccountLinking)
+See this [wiki](https://github.com/DevilPro1/MMM-Alexa/wiki)
 
 # Initial Code Generator
 
