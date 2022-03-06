@@ -33,7 +33,7 @@ It will return the initial code for your module configuration (InitialCode).
 This code is needed for get the token of AVS (Alexa Voice Service)
 
 To make simple things I have code an HTML page (designed by @2hdlockness)
-you can get this code [there](https://devilpro1.github.io/MMM-Alexa/#)
+you can get this code [there](https://devilpro1.github.io/MMM-Alexa/index.html)
 
 > Notes:
 > `deviceSerialNumber` is set by default to `1234`, you can use this value, it's not really important
@@ -83,7 +83,7 @@ you can get this code [there](https://devilpro1.github.io/MMM-Alexa/#)
       ClientSecret: "XXX",
       InitialCode: "XXX",
       deviceSerialNumber: 1234,
-      redirectUri: "http://alexa.bugsounet.fr/index.html"
+      redirectUri: "https://devilpro1.github.io/MMM-Alexa/index.html"
     },
     micConfig: {
       sampleRate: "16000",
@@ -115,7 +115,7 @@ Just modify your desired part!
 when I register my developer account, in console and Initial Code Generator, i have set this value:
 Product ID => Mirror
 deviceSerialNumber => 1234
-redirect url => http://alexa.bugsounet.fr/index.html
+redirect url => https://devilpro1.github.io/MMM-Alexa/index.html
 Client ID => amzn1.application-oa2-client.XXXYYYZZZ
 Client Secret => XYYYRZZAXX
 InitialCode => XAAZRTTXX
@@ -138,7 +138,7 @@ avs: {
       ClientSecret: "XYYYRZZAXX",
       InitialCode: "XAAZRTTXX",
       deviceSerialNumber: 1234,
-      redirectUri: "http://alexa.bugsounet.fr/index.html"
+      redirectUri: "https://devilpro1.github.io/MMM-Alexa/index.html"
 },
 ```
 configMergeDeep is a magician !
@@ -202,7 +202,7 @@ When you set `debug` to `true`, detailed log will be recorded. When you don't wa
 > |- ClientSecret|TEXT | "XXX"
 > |- InitialCode|TEXT | "XXX"
 > |- deviceSerialNumber |NUMBER | 1234
-> |- redirectUri |TEXT | "http://alexa.bugsounet.fr/index.html"
+> |- redirectUri |TEXT | "https://devilpro1.github.io/MMM-Alexa/index.html"
 
 - ProductID: The ProductID from Developer console of amazon developer 
 - CliendID: The ClientID from Developer console of amazon developer
