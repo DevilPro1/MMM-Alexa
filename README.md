@@ -17,7 +17,7 @@ MagicMirror v2.14.00 and more
 
 ```sh
 cd ~/MagicMirror/modules
-git clone https://github.com/bugsounet/MMM-Alexa
+git clone https://github.com/devilpro1/MMM-Alexa
 cd MMM-Alexa
 npm install
 ```
