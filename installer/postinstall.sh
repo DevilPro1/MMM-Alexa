@@ -1,7 +1,7 @@
 #!/bin/bash
-# +----------------+
-# | npm preinstall |
-# +----------------+
+# +-----------------+
+# | npm postinstall |
+# +-----------------+
 
 # get the installer directory
 Installer_get_current_dir () {
@@ -24,21 +24,11 @@ source utils.sh
 # module name
 Installer_module="MMM-Alexa"
 
-# check version
-Installer_version="$(cat ../package.json | grep version | cut -c14-30 2>/dev/null)"
-
-# Let's start !
-Installer_info "Welcome to $Installer_module $Installer_version"
 echo
 
-# delete package-lock.json (force)
-rm -f ../package-lock.json
-
-# Check not run as root
-if [ "$EUID" -eq 0 ]; then
-  Installer_error "npm install must not be used as root"
-  exit 1
-fi
-
+# the end...
+Installer_error "Any errors or doubts in : https://github.com/DevilPro1/MMM-Alexa/issues"
+Installer_warning "@devilpro1"
 echo
-Installer_info "Installing all npm libraries..."
+Installer_success "$Installer_module is now installed !"
+

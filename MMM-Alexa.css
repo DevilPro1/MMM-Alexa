@@ -1,0 +1,48 @@
+#ALEXA-WRAPPER {
+  display: flex;
+  margin-left: 10px;
+  align-items: center;
+}
+
+#ALEXA_STATUS_DISPLAY.hidden {
+  display: none
+}
+
+#ALEXA_STATUS {
+  width: 100px;
+  height: 70px;
+  background-size: 70%;
+  background-repeat: no-repeat;
+}
+
+#ALEXA_STATUS.notInitialized {
+  background-image:url('./resources/connecting.gif');
+}
+
+#ALEXA_STATUS.Busy {
+  background-image:url('./resources/speak.gif');
+}
+
+#ALEXA_STATUS.Ready {
+  background-image:url('./resources/online.gif');
+}
+
+#ALEXA_STATUS.Start{
+  background-image:url('./resources/start.gif');
+}
+
+#ALEXA_STATUS.Stop{
+  background-image:url('./resources/busy.gif');
+}
+
+#ALEXA_STATUS.Speak {
+  background-image:url('./resources/start.gif');
+}
+
+#ALEXA_STATUS.Error {
+  background-image:url('./resources/error.gif');
+}
+
+#ALEXA_STATUS.BusyByGoogle {
+  background-image:url('./resources/busyByGoogle.gif');
+}
