@@ -1,8 +1,9 @@
 {
   "name": "MMM-Alexa",
-  "version": "1.1.2",
   "description": "An embedded Amazon Alexa on MagicMirror.",
-  "main": "MMM-Alexa.js",
+  "scripts": {
+    "preinstall": "installer/preinstall.sh"
+  },
   "keywords": [
     "magic mirror",
     "module",
@@ -11,12 +12,6 @@
     "embedded",
     "assistant for device"
   ],
-  "scripts": {
-    "preinstall": "installer/preinstall.sh",
-    "postinstall": "installer/postinstall.sh",
-    "update": "installer/update.sh",
-    "micConfig": "installer/micConfig.sh"
-  },
   "author": "devilpro1",
   "license": "MIT",
   "bugs": {
@@ -26,11 +21,5 @@
     "type": "git",
     "url": "https://github.com/devilpro1/MMM-Alexa"
   },
-  "homepage": "https://github.com/devilpro1/MMM-Alexa",
-  "dependencies": {
-    "@devilpro1/alexa": "^1.0.1",
-    "@bugsounet/node-lpcm16": "^2.0.0",
-    "@bugsounet/npmcheck": "^0.9.91",
-    "request": "^2.88.2"
-  }
+  "homepage": "https://github.com/devilpro1/MMM-Alexa"
 }
