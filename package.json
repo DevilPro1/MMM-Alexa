@@ -12,14 +12,14 @@
     "embedded",
     "assistant for device"
   ],
-  "author": "bugsounet",
+  "author": "devilpro1",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bugsounet/MMM-Alexa/issues"
+    "url": "https://github.com/devilpro1/MMM-Alexa/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/bugsounet/MMM-Alexa"
+    "url": "https://github.com/devilpro1/MMM-Alexa"
   },
-  "homepage": "https://github.com/bugsounet/MMM-Alexa"
+  "homepage": "https://github.com/devilpro1/MMM-Alexa"
 }
