@@ -2,11 +2,11 @@
 
 #--------------
 # Common utils
-#  Bugsounet
+#  @devilpro1
 #--------------
 
 # postinstaller version
-Installer_vinstaller="1.0.9 by Bugsounet"
+Installer_vinstaller="1.0.9 by DevilPro1"
 
 # debug mode
 Installer_debug=false
