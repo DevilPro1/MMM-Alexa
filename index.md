@@ -92,5 +92,5 @@
       <div class="logo"><img src="Alexa-logos.png" width="400px" height="130px"/>
     </div>
     <footer class="footer">
-      <p>Designed by @devilpro1 2021 ~</p>
+      <p>Designed by @2hdlockness 2021 ~</p>
     </footer>
