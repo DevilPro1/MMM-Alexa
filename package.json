@@ -28,9 +28,9 @@
   },
   "homepage": "https://github.com/devilpro1/MMM-Alexa",
   "dependencies": {
-    "@devilpro1/alexa": "^1.0.1",
-    "@bugsounet/node-lpcm16": "^2.0.0",
-    "@bugsounet/npmcheck": "^0.9.91",
+    "@devilpro1/alexa": "^1.0.2",
+    "@bugsounet/node-lpcm16": "^1.0.2",
+    "@bugsounet/npmcheck": "^0.9.98",
     "request": "^2.88.2"
   }
 }
