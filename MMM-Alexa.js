@@ -11,7 +11,7 @@ Module.register("MMM-Alexa", {
       ClientSecret: "XXX",
       InitialCode: "XXX",
       deviceSerialNumber: 1234,
-      redirectUri: "https://devilpro1.github.io/MMM-Alexa/index.html"
+      redirectUri: "https://devilpro1.github.io/MMM-Alexa/"
     },
     micConfig: {
       sampleRate: "16000",
