@@ -1,8 +1,9 @@
 # MMM-Alexa
 
-## 2022/02/13: 
+## 2022/02/13:
 
-This module is under development
+Este módulo está en desarrollo.
+
 ! [] (https://raw.githubusercontent.com/devilpro1/MMM-Alexa/master/resources/Alexa.png)
 
 `MMM-Alexa` is an embedded Alexa echo on MagicMirror.
