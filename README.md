@@ -1,8 +1,9 @@
 # MMM-Alexa
 
-## 2022/02/13: This module is now unmaintened and Archived
+## 2022/02/13: 
 
-![](https://raw.githubusercontent.com/devilpro1/MMM-Alexa/master/resources/Alexa.png)
+This module is under development
+! [] (https://raw.githubusercontent.com/devilpro1/MMM-Alexa/master/resources/Alexa.png)
 
 `MMM-Alexa` is an embedded Alexa echo on MagicMirror.
 
