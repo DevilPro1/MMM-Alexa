@@ -4,7 +4,7 @@
 
 Este módulo está en desarrollo.
 
-! [] (https://raw.githubusercontent.com/devilpro1/MMM-Alexa/master/resources/Alexa.png)
+ [] ( https://raw.githubusercontent.com/devilpro1/MMM-Alexa/master/resources/Alexa.png )
 
 `MMM-Alexa` is an embedded Alexa echo on MagicMirror.
 
